@@ -4,9 +4,11 @@ module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1]
         const decodedToken = jwt.decode(token, process.env.SECRET_KEY)
-        const userId = token.userId
-        req.auth = {
-            userId : userId
+        if(decodedToken != null) {
+            const userId = token.userId
+            req.auth = {
+                userId : userId
+            }
         }
     }
     catch(err) {
