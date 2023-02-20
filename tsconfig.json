@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src",
+        "target": "ES2015",
+        "noEmitOnError": true,
+        "watch": true,
+        "strict": true,
+    }
+}
