@@ -6,10 +6,10 @@ module.exports = (req: userRequest, res: userResponse, next: any): void => {
     // DONT WORK
     const token = req.headers.authorization.split(", ")[1]
     const decodedToken: string = jwtAuth.decode(token, process.env.SECRET_KEY)
-    const userId = req.headers.authorization.split(":")[0]
+    const userId = 3
     if (decodedToken != null) {
       res.authorization = {
-        userId: parseInt(userId),
+        userId: userId,
       }
     }
   } catch (err: unknown) {
