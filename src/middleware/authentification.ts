@@ -1,16 +1,18 @@
 const jwtAuth = require("jsonwebtoken")
+import { userRequest, userResponse } from "../controllers/userController"
 
-module.exports = (req: any, res: any, next: any): void => {
+module.exports = (req: userRequest, res: userResponse, next: any): void => {
   try {
-    const token = req.headers.authorization.split(" ")[1]
-    const decodedToken = jwtAuth.decode(token, process.env.SECRET_KEY)
+    // DONT WORK
+    const token = req.headers.authorization.split(", ")[1]
+    const decodedToken: string = jwtAuth.decode(token, process.env.SECRET_KEY)
+    const userId = req.headers.authorization.split(":")[0]
     if (decodedToken != null) {
-      const userId = token.userId
-      req.auth = {
-        userId: userId,
+      res.authorization = {
+        userId: parseInt(userId),
       }
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(401).json({ error: err })
   }
 }
