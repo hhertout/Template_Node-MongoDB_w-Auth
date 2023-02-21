@@ -20,7 +20,7 @@ export type userResponse = {
 
 exports.signup = (req: userRequest, res: userResponse): void => {
   bcrypt
-    .hash(req.body?.password, 10)
+    .hash(req.body.password, 10)
     .then((hash: string) => {
       const user = new User({
         email: req.body.email,
@@ -41,13 +41,13 @@ exports.signup = (req: userRequest, res: userResponse): void => {
 }
 
 exports.login = (req: userRequest, res: userResponse): void => {
-  User.findOne({ email: req.body?.email })
+  User.findOne({ email: req.body.email })
     .then((user: { _id: number; email: string; password: string }) => {
       if (user === null) {
         res.status(401).json({ message: "invalid email or password" })
       } else {
         bcrypt
-          .compare(req.body?.password, user.password)
+          .compare(req.body.password, user.password)
           .then((valid: boolean) => {
             if (!valid) {
               res.status(401).json({ message: "invalid email or password" })

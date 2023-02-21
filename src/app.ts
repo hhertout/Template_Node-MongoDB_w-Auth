@@ -8,10 +8,9 @@ const db = require("./config/db")
 const app = express()
 
 db.connect()
+app.use(cors.config)
 
 app.use(express.json())
-
-app.use(cors.config)
 
 app.use("/api/stuff", StuffRouter)
 app.use("/", userRouter)
