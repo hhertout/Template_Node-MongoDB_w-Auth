@@ -10,12 +10,23 @@ export type userRequest = {
     email: string
     password: string
   }
+  cookies: {
+    token: string
+  }
+  user: string
 }
 export type userResponse = {
   status(statusCode: number): any
   authorization: {
     userId: number
   }
+  cookie(
+    name: string,
+    value: string,
+    keys?: { httpOnly?: boolean; secure?: boolean; maxAge?: number; signed?: boolean }
+  ): any
+  clearCookie(name: string): any
+  send(message: string): any
 }
 
 exports.signup = (req: userRequest, res: userResponse): void => {
@@ -52,13 +63,12 @@ exports.login = (req: userRequest, res: userResponse): void => {
             if (!valid) {
               res.status(401).json({ message: "invalid email or password" })
             } else {
-              res.status(200).json({
-                userId: user._id,
-                token: jwt.sign(
-                    { userId: user._id }, 
-                    process.env.SECRET_KEY, 
-                    { expiresIn: "24h" }),
+              const token = jwt.sign({ user: user._id }, process.env.SECRET_KEY, { expiresIn: "24h" })
+
+              res.cookie("token", token, {
+                httpOnly: true,
               })
+              res.status(200).json({ message: "login successfull" })
             }
           })
           .catch((err: unknown) => res.status(500).json({ error: err }))
