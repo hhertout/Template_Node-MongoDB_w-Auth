@@ -67,6 +67,7 @@ exports.login = (req: userRequest, res: userResponse): void => {
 
               res.cookie("token", token, {
                 httpOnly: true,
+                secure: true,
               })
               res.status(200).json({ message: "login successfull" })
             }
